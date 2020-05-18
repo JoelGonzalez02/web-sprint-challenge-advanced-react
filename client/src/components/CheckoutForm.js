@@ -30,7 +30,7 @@ const CheckoutForm = (props) => {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <h2>Checkout Form</h2>
+        <h2 data-testid='form-header'>Checkout Form</h2>
         <label>
           First Name:
           <input
@@ -46,7 +46,7 @@ const CheckoutForm = (props) => {
             name="lastName"
             value={values.lastName}
             onChange={handleChanges}
-            data-testid="lastName"
+            data-testid='lastName'
           />
         </label>
         <label>
@@ -55,22 +55,22 @@ const CheckoutForm = (props) => {
             name="address"
             value={values.address}
             onChange={handleChanges}
-            data-testid="address"
+            data-testid='address'
           />
         </label>
         <label>
           City:
-          <input name="city" value={values.city} onChange={handleChanges}  data-testid="city" />
+          <input name="city" value={values.city} onChange={handleChanges} data-testid='city' />
         </label>
         <label>
           State:
-          <input name="state" value={values.state} onChange={handleChanges}  data-testid="state"/>
+          <input name="state" value={values.state} onChange={handleChanges} data-testid='state' />
         </label>
         <label>
           Zip:
-          <input name="zip" value={values.zip} onChange={handleChanges}  data-testid="zip"/>
+          <input name="zip" value={values.zip} onChange={handleChanges} data-testid='zip' />
         </label>
-        <button>Checkout</button>
+        <button data-testid='checkout'>Checkout</button>
       </form>
 
       {showSuccessMessage && (
@@ -91,7 +91,7 @@ const CheckoutForm = (props) => {
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
-export default CheckoutForm;
+export default CheckoutForm

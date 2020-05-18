@@ -1,49 +1,45 @@
-import React from 'react';
-import { render, fireEvent } from "@testing-library/react";
-import CheckoutForm from './CheckoutForm';
+import React from "react"
+import { render, fireEvent, waitFor, findByTestId } from "@testing-library/react"
+import CheckoutForm from "../components/CheckoutForm"
 
+// Write up the two tests here and make sure they are testing what the title shows
 
-test("tests that the labels are in the contact form", () => {
-  const { getByLabelText } = render(<CheckoutForm />);
+test("form header renders", () => {
+  const { getByTestId } = render(<CheckoutForm />)
+  const header = getByTestId('form-header')
+  expect(header).toHaveTextContent('Checkout Form')
+})
 
-  const firstNameLabel = getByLabelText(/first name/i)
-  const lastNameLabel = getByLabelText(/last name/i)
-  const addressLabel = getByLabelText(/address/i)
-  const cityLabel = getByLabelText(/city/i)
-  const stateLabel = getByLabelText(/state/i)
-  const zipLabel = getByLabelText(/zip/i)
+test("form shows success message on submit with form details", async () => {
+  const { getByTestId } = render(<CheckoutForm />)
+  const firstName = 'Joel'
+  const lastName = 'Gonzalez'
+  const address = '4364 Verona St'
+  const city = 'Los Angeles'
+  const state = 'CA'
+  const zip = '90023'
 
-  expect(firstNameLabel).toBeInTheDocument();
-  expect(lastNameLabel).toBeInTheDocument();
-  expect(addressLabel).toBeInTheDocument();
-  expect(cityLabel).toBeInTheDocument();
-  expect(stateLabel).toBeInTheDocument();
-  expect(zipLabel).toBeInTheDocument();
+  const firstNameID = getByTestId('firstName')
+  const lastNameID = getByTestId('lastName')
+  const addressID = getByTestId('address')
+  const cityID = getByTestId('city')
+  const stateID = getByTestId('state')
+  const zipID = getByTestId('zip')
 
-});
+  fireEvent.change(firstNameID, { target: { value: firstName } })
+  fireEvent.change(lastNameID, { target: { value: lastName } })
+  fireEvent.change(addressID, { target: { value: address } })
+  fireEvent.change(cityID, { target: { value: city } })
+  fireEvent.change(stateID, { target: { value: state } })
+  fireEvent.change(zipID, { target: { value: zip } })
+  fireEvent.click(getByTestId('checkout'))
 
-test("tests the inputs on the form", () => {
-  const { getByLabelText } = render(<CheckoutForm />);
+  const successName = await waitFor(() => getByTestId('success-name'))
+  const successAddress = await waitFor(() => getByTestId('success-address'))
+  const successArea = await waitFor(() => getByTestId('success-area'))
 
-  const firstNameInput = getByLabelText(/first name/i)
-  const lastNameInput = getByLabelText(/last name/i)
-  const addressInput = getByLabelText(/address/i)
-  const cityInput = getByLabelText(/city/i)
-  const stateInput = getByLabelText(/state/i)
-  const zipInput = getByLabelText(/zip/i)
+  expect(successName.textContent).toBe(`${firstName} ${lastName}`)
+  expect(successAddress.textContent).toBe(address)
+  expect(successArea.textContent).toBe(`${city}, ${state} 90023`)
 
-  fireEvent.change( firstNameInput, {target: {value: "Joel"}})
-  fireEvent.change( lastNameInput, {target: {value: "Gonzalez"}})
-  fireEvent.change( addressInput, {target: {value: "4364 Verona st"}})
-  fireEvent.change( cityInput, {target: {value: "Los Angeles"}})
-  fireEvent.change( stateInput, {target: {value: "CA"}})
-  fireEvent.change( zipInput, {target: {value: "90023"}})
-
-  expect(firstNameInput.value).toBe("Joel")
-  expect(lastNameInput.value).toBe("Gonzalez")
-  expect(addressInput.value).toBe("4364 Verona St")
-  expect(cityInput.value).toBe("Los Angeles")
-  expect(stateInput.value).toBe("CA")
-  expect(zipInput.value).toBe("90023")
-  
 })
